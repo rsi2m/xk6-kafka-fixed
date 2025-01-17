@@ -1,4 +1,4 @@
-module github.com/mostafa/xk6-kafka
+module github.com/rsi2m/xk6-kafka-fixed
 
 go 1.23
 

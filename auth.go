@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials/ec2rolecreds"
 	kafkago "github.com/segmentio/kafka-go"
 	"github.com/segmentio/kafka-go/sasl"
 	"github.com/segmentio/kafka-go/sasl/aws_msk_iam_v2"
@@ -112,7 +113,8 @@ func GetSASLMechanism(saslConfig SASLConfig) (sasl.Mechanism, *Xk6KafkaError) {
 		}
 		return mechanism, nil
 	case saslAwsIam:
-		cfg, err := config.LoadDefaultConfig(context.TODO())
+		customCreds := ec2rolecreds.New()
+		cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithCredentialsProvider(customCreds))
 		if err != nil {
 			return nil, NewXk6KafkaError(
 				failedCreateDialerWithAwsIam, "Unable to load AWS IAM config for AWS MSK", err)
