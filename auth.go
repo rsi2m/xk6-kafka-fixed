@@ -114,6 +114,7 @@ func GetSASLMechanism(saslConfig SASLConfig) (sasl.Mechanism, *Xk6KafkaError) {
 		return mechanism, nil
 	case saslAwsIam:
 		customCreds := ec2rolecreds.New()
+		fmt.Printf("Custom Credentials: %+v\n", customCreds)
 		cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithCredentialsProvider(customCreds))
 		if err != nil {
 			return nil, NewXk6KafkaError(
